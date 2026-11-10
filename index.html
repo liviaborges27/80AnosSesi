@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Da Agulha ao Robô</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,800&family=Barlow:wght@400;500;600;700&family=Special+Elite&display=swap">
+<style>
+/* Layout: faixa azul SESI de abertura → aviso dos 80 anos → linha do tempo em 3 trilhas (modo slide) → seções temáticas em blocos alternados → casos em aberto (dossiê) → mural do futuro → fontes */
+:root{
+  --bg:#f2f5f9;
+  --surface:#ffffff;
+  --ink:#0b1a2c;
+  --muted:#506377;
+  --line:#d3dce7;
+  --sesi:#0058a8;
+  --sesi-deep:#00366b;
+  --sesi-soft:#e2edf9;
+  --cana:#4b8a1c;
+  --cana-deep:#2c5610;
+  --ouro:#e7a30c;
+  --ouro-soft:#fff3d1;
+  --paper:#f6efdc;
+  --paper-ink:#3a2f1c;
+  --ok:#1f8a4c; --news:#0b7bbd; --acad:#7a4fc4; --clue:#b86a00; --dream:#c2378c;
+  --display:"Barlow Condensed","Arial Narrow",Impact,sans-serif;
+  --body:"Barlow",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --type:"Special Elite","Courier New",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#07111d; --surface:#0e1d2f; --ink:#e7eef7; --muted:#9db0c4; --line:#21364e;
+    --sesi:#56a8f2; --sesi-deep:#0a3768; --sesi-soft:#11304f;
+    --cana:#94cb5d; --cana-deep:#24470e; --ouro:#f4b631; --ouro-soft:#3a2d0a;
+    --paper:#2a2416; --paper-ink:#f0e4c4;
+    --ok:#4fd08a; --news:#4cb4ee; --acad:#b393f0; --clue:#f0a443; --dream:#f07dbf;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#07111d; --surface:#0e1d2f; --ink:#e7eef7; --muted:#9db0c4; --line:#21364e;
+  --sesi:#56a8f2; --sesi-deep:#0a3768; --sesi-soft:#11304f;
+  --cana:#94cb5d; --cana-deep:#24470e; --ouro:#f4b631; --ouro-soft:#3a2d0a;
+  --paper:#2a2416; --paper-ink:#f0e4c4;
+  --ok:#4fd08a; --news:#4cb4ee; --acad:#b393f0; --clue:#f0a443; --dream:#f07dbf;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.02}
+p{margin:0}
+a{color:var(--sesi)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--ouro);outline-offset:2px;border-radius:4px}
+.label{font-family:var(--display);font-weight:700;letter-spacing:.16em;text-transform:uppercase;font-size:14px}
+
+/* ---------- Topo / navegação ---------- */
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--sesi-deep);border-bottom:3px solid var(--ouro)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--sesi-deep)}
+.topbar .wrap{display:flex;align-items:center;gap:18px;min-height:52px;overflow-x:auto;scrollbar-width:none}
+.brand{font-family:var(--display);font-weight:800;color:#fff;font-size:22px;letter-spacing:.02em;white-space:nowrap;text-decoration:none}
+.brand span{color:var(--ouro)}
+.topnav{display:flex;gap:4px;margin-left:auto}
+.topnav a{color:#cfe1f5;text-decoration:none;font-family:var(--display);font-weight:600;letter-spacing:.06em;text-transform:uppercase;font-size:15px;padding:6px 10px;border-radius:6px;white-space:nowrap}
+.topnav a:hover{background:rgba(255,255,255,.12);color:#fff}
+
+/* ---------- Abertura ---------- */
+.hero{background:var(--sesi);color:#fff;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:12px;background:repeating-linear-gradient(-45deg,var(--ouro) 0 14px,#0b1a2c 14px 28px)}
+.hero .wrap{padding-block:48px 56px;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:32px;align-items:center;position:relative;z-index:1}
+.hero .label{color:#ffe08a}
+.hero h1{font-size:clamp(48px,7.4vw,96px);font-weight:800;text-transform:uppercase;margin-top:10px;letter-spacing:-.01em}
+.hero h1 em{font-style:italic;color:#ffe08a}
+.hero .lead{max-width:56ch;margin-top:16px;color:#e3eefb;font-size:19px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.btn{border:0;border-radius:8px;padding:12px 20px;font-family:var(--display);font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:18px;display:inline-flex;gap:8px;align-items:center;text-decoration:none}
+.btn.gold{background:var(--ouro);color:#0b1a2c}
+.btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 2px rgba(255,255,255,.7)}
+.btn:hover{filter:brightness(1.07)}
+.eighty{position:relative;display:grid;place-items:center}
+.eighty .n{font-family:var(--display);font-weight:800;font-size:clamp(170px,26vw,330px);line-height:.78;letter-spacing:-.05em;color:transparent;-webkit-text-stroke:3px rgba(255,255,255,.9);position:relative}
+.eighty .n::after{content:"80";position:absolute;left:10px;top:10px;color:rgba(255,224,138,.9);-webkit-text-stroke:0;z-index:-1}
+.eighty .years{font-family:var(--display);font-weight:700;letter-spacing:.3em;font-size:20px;margin-top:10px;color:#fff}
+.gear{position:absolute;right:-90px;top:-90px;width:360px;height:360px;opacity:.12;animation:spin 60s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* números de abertura */
+.stats{background:var(--surface);border-bottom:1px solid var(--line)}
+.stats .wrap{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding-block:22px}
+.stat{padding:6px 16px;border-left:3px solid var(--line);min-width:0}
+.stat:first-child{border-left-color:var(--sesi)}
+.stat b{display:block;font-family:var(--display);font-weight:800;font-size:clamp(30px,3.6vw,44px);line-height:1;color:var(--sesi);font-variant-numeric:tabular-nums}
+.stat span{display:block;font-size:14px;color:var(--muted);line-height:1.3;margin-top:4px}
+
+/* ---------- Aviso 80 anos ---------- */
+.notice{margin-top:34px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:start;background:var(--ouro-soft);border:2px solid var(--ouro);border-radius:14px;padding:20px 22px}
+.notice .big{font-family:var(--display);font-weight:800;font-size:44px;color:var(--ouro);line-height:.9}
+.notice h3{font-size:24px;text-transform:uppercase}
+.notice p{margin-top:6px;max-width:80ch}
+
+/* ---------- Seções ---------- */
+section.block{padding-block:64px 8px;scroll-margin-top:70px}
+.sec-head{display:grid;gap:8px;margin-bottom:24px;max-width:820px}
+.sec-head .label{color:var(--sesi)}
+.sec-head h2{font-size:clamp(38px,5.4vw,62px);font-weight:800;text-transform:uppercase}
+.sec-head p{color:var(--muted);font-size:18px;max-width:64ch}
+
+/* ---------- Linha do tempo ---------- */
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 14px;font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:8px}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--bg)}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block;flex:none}
+.dot.brasil{background:var(--sesi)} .dot.cidade{background:var(--cana)} .dot.unidade{background:var(--ouro)} .dot.futuro{background:var(--dream)}
+.btn-present{background:var(--sesi);color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:14px;font-size:14px;color:var(--muted);align-items:center}
+.seal{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:13px;border:2px solid currentColor;border-radius:4px;padding:1px 8px;line-height:1.5;white-space:nowrap}
+.seal.oficial{color:var(--ok)} .seal.noticia{color:var(--news)} .seal.pesquisa{color:var(--acad)} .seal.pista{color:var(--clue);border-style:dashed} .seal.ideia{color:var(--dream)}
+
+.rail-box{overflow-x:auto;padding-block:20px 6px;margin-top:8px;scrollbar-width:thin}
+.rail{display:flex;min-width:max-content;position:relative;padding:0 8px}
+.rail::before{content:"";position:absolute;left:0;right:0;top:29px;height:4px;background:var(--line);border-radius:2px}
+.node{background:none;border:0;padding:0 10px;display:flex;flex-direction:column;align-items:center;gap:7px;color:var(--muted);position:relative;min-width:66px}
+.node .pin{width:22px;height:22px;border-radius:50%;border:4px solid var(--bg);margin-top:20px;box-shadow:0 0 0 2px var(--line);transition:transform .2s}
+.node[data-track="brasil"] .pin{background:var(--sesi)}
+.node[data-track="cidade"] .pin{background:var(--cana)}
+.node[data-track="unidade"] .pin{background:var(--ouro)}
+.node[data-track="futuro"] .pin{background:var(--dream)}
+.node .yr{font-family:var(--display);font-weight:700;font-size:18px;line-height:1;white-space:nowrap;font-variant-numeric:tabular-nums}
+.node[aria-current="true"] .pin{transform:scale(1.5);box-shadow:0 0 0 3px var(--ink)}
+.node[aria-current="true"] .yr{color:var(--ink)}
+.node.dim{opacity:.2}
+.node:hover .yr{color:var(--ink)}
+.progress{height:5px;background:var(--line);border-radius:3px;overflow:hidden}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--sesi),var(--ouro));width:0;transition:width .35s}
+
+.stage{display:grid;grid-template-columns:56px minmax(0,1fr) 56px;gap:14px;align-items:stretch;padding-block:18px 6px}
+.nav{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;font-size:30px;font-weight:700;display:grid;place-items:center}
+.nav:hover:not(:disabled){border-color:var(--sesi);color:var(--sesi)}
+.nav:disabled{opacity:.3;cursor:default}
+.card{background:var(--surface);border-radius:18px;border:2px solid var(--line);display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.6fr);overflow:hidden;min-height:430px}
+.card-year{padding:28px;display:flex;flex-direction:column;justify-content:space-between;gap:18px;color:#fff;position:relative;overflow:hidden}
+.card[data-track="brasil"] .card-year{background:var(--sesi-deep)}
+.card[data-track="cidade"] .card-year{background:#2c5610}
+.card[data-track="unidade"] .card-year{background:#7a4f00}
+.card[data-track="futuro"] .card-year{background:#6b1a4e}
+.card-year::after{content:"";position:absolute;left:0;right:0;bottom:0;height:8px;background:repeating-linear-gradient(-45deg,rgba(255,255,255,.35) 0 8px,transparent 8px 16px)}
+.card-year .tag{font-family:var(--display);text-transform:uppercase;letter-spacing:.14em;font-weight:700;font-size:15px;color:#ffe08a}
+.card-year .num{font-family:var(--display);font-weight:800;font-size:clamp(62px,8.6vw,116px);line-height:.85;letter-spacing:-.02em;margin-top:6px;overflow-wrap:anywhere}
+.card-year .date{font-family:var(--display);font-weight:600;font-size:20px;color:#e9f1fb;margin-top:8px}
+.card-year .ico{width:92px;height:92px}
+.card-year .count{font-family:var(--display);font-size:16px;letter-spacing:.1em;color:#d6e3f2;font-variant-numeric:tabular-nums}
+.card-body{padding:30px 34px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.card-body .seal{align-self:flex-start}
+.card-body h2{font-size:clamp(32px,4vw,50px);font-weight:700;text-transform:uppercase}
+.card-body p{max-width:62ch;font-size:19px}
+.fact{border-left:5px solid var(--ouro);background:var(--sesi-soft);padding:12px 16px;border-radius:0 10px 10px 0;font-size:17px}
+.fact b{font-family:var(--display);letter-spacing:.1em;text-transform:uppercase;font-size:14px;display:block;color:var(--sesi)}
+.card[data-track="brasil"]{--tc:var(--sesi-deep)}
+.card[data-track="cidade"]{--tc:#2c5610}
+.card[data-track="unidade"]{--tc:#7a4f00}
+.card[data-track="futuro"]{--tc:#6b1a4e}
+.card.has-photo{grid-template-columns:minmax(0,1.15fr) minmax(0,1.4fr)}
+.card-year .photo{position:absolute;inset:0;border:0;padding:0;margin:0;background-size:cover;background-position:center;cursor:zoom-in;z-index:0}
+.card-year.has-photo::before{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--tc) 8%,rgba(0,0,0,.15) 55%,rgba(0,0,0,.35) 100%);z-index:1;pointer-events:none}
+.card-year > div,.card-year > svg{position:relative;z-index:2;pointer-events:none}
+.card-year.logo .photo{background-color:#fff;background-size:82% auto;background-repeat:no-repeat;background-position:center 34%}
+.card-year.logo::before{background:linear-gradient(to top,var(--tc) 22%,rgba(255,255,255,0) 48%)}
+.card-year.has-photo .tag{background:var(--tc);display:inline-block;padding:2px 10px;border-radius:4px}
+.card-year.has-photo .num{text-shadow:0 2px 14px rgba(0,0,0,.45)}
+.photo-cap{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:14px;color:var(--muted);margin-top:auto;padding-top:4px}
+.photo-cap button{border:1.5px solid var(--line);background:none;color:var(--ink);border-radius:999px;padding:2px 12px;font-size:13px;font-weight:600}
+.photo-cap button:hover{border-color:var(--sesi);color:var(--sesi)}
+.photo-cap .ref{font-weight:600;color:var(--clue)}
+.lightbox{position:fixed;inset:0;z-index:50;background:rgba(4,10,18,.92);display:grid;place-items:center;padding:max(24px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(24px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));cursor:zoom-out}
+.lightbox figure{margin:0;display:grid;gap:12px;justify-items:center;max-width:100%}
+.lightbox img{max-height:80vh;max-width:min(1200px,100%);border-radius:6px;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.lightbox figcaption{color:#e7eef7;font-size:16px;text-align:center;max-width:70ch}
+.house-photo{margin:14px 0 0;border-radius:10px;overflow:hidden;border:2px solid var(--line);background:var(--surface)}
+.house-photo img{display:block;width:100%;aspect-ratio:16/7;object-fit:cover;cursor:zoom-in}
+.house-photo figcaption{font-size:13px;color:var(--muted);padding:6px 10px}
+.card-enter{animation:enter .4s ease}
+@keyframes enter{from{opacity:.4;transform:translateY(8px)}to{opacity:1;transform:none}}
+.hint{color:var(--muted);font-size:14px;text-align:center;margin-top:6px}
+kbd{font-family:var(--body);border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 6px;background:var(--surface);font-size:13px}
+
+/* ---------- Antes e agora ---------- */
+.pairs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.pair{background:var(--surface);border:2px solid var(--line);border-radius:16px;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;padding:20px;gap:10px}
+.side{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px;min-width:0}
+.side svg{width:70px;height:70px}
+.side.antes svg{color:var(--muted)} .side.agora svg{color:var(--sesi)}
+.side .when{font-family:var(--display);font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:14px}
+.side.antes .when{color:var(--muted)} .side.agora .when{color:var(--sesi)}
+.side .what{font-weight:600;font-size:17px;line-height:1.25}
+.side .where{font-size:14px;color:var(--muted);line-height:1.3}
+.arrow{font-family:var(--display);font-size:40px;color:var(--ouro);font-weight:800}
+
+/* ---------- Duas casas (placas de rua) ---------- */
+.houses{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:18px;align-items:start}
+.houses .road{align-self:start;margin-top:40px}
+.plate{background:#0d4ea6;color:#fff;border-radius:10px;border:4px solid #fff;box-shadow:0 0 0 3px #0d4ea6,0 10px 24px rgba(0,0,0,.18);padding:18px 20px;text-align:center}
+.plate small{display:block;font-family:var(--display);letter-spacing:.14em;text-transform:uppercase;font-size:14px;color:#cfe1f5}
+.plate strong{display:block;font-family:var(--display);font-weight:800;font-size:clamp(26px,3.2vw,38px);text-transform:uppercase;line-height:1.05;margin:4px 0}
+.plate .bairro{display:block;font-family:var(--display);font-size:20px;font-weight:600;color:#ffe08a}
+.house-info{margin-top:14px;display:grid;gap:6px;font-size:16px}
+.house-info .seal{justify-self:start}
+.road{font-family:var(--display);font-weight:800;color:var(--ouro);font-size:46px;text-align:center;line-height:1}
+.road .arr-v{display:none}
+.road small{display:block;font-size:14px;letter-spacing:.1em;color:var(--muted);font-weight:600;text-transform:uppercase}
+
+/* ---------- Temas ---------- */
+.theme-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+.panel{background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.panel h3{font-size:30px;text-transform:uppercase}
+.panel .label{color:var(--muted)}
+.span-7{grid-column:span 7}.span-5{grid-column:span 5}.span-6{grid-column:span 6}.span-4{grid-column:span 4}.span-8{grid-column:span 8}.span-12{grid-column:span 12}
+.panel.blue{background:var(--sesi-deep);border-color:var(--sesi-deep);color:#fff}
+.panel.blue .label{color:#ffe08a}
+.panel.blue p,.panel.blue li{color:#dce9f7}
+.nums{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.num-tile{border-top:4px solid var(--sesi);padding-top:8px;min-width:0}
+.num-tile b{display:block;font-family:var(--display);font-weight:800;font-size:40px;line-height:1;color:var(--sesi);font-variant-numeric:tabular-nums}
+.num-tile span{display:block;font-size:15px;line-height:1.3}
+.num-tile em{display:block;font-style:normal;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px;font-weight:600}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{background:var(--sesi-soft);color:var(--sesi);border-radius:999px;padding:3px 12px;font-weight:600;font-size:14px}
+.warn{font-size:14px;color:var(--muted);border-left:3px solid var(--clue);padding-left:10px}
+.team{font-family:var(--display);font-weight:800;font-size:clamp(64px,9vw,112px);line-height:.85;color:#ffe08a;letter-spacing:-.02em}
+.team small{display:block;font-size:22px;letter-spacing:.14em;color:#fff;font-weight:700;margin-top:6px}
+.score{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.score li{display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;align-items:baseline;border-bottom:1px dashed rgba(255,255,255,.25);padding-bottom:10px}
+.score li b{font-family:var(--display);font-weight:800;font-size:24px;color:#ffe08a}
+.mini{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.mini li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px;align-items:baseline}
+.mini li b{font-family:var(--display);font-weight:800;font-size:22px;color:var(--sesi)}
+.bio{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px;align-items:start}
+.bio .mono{width:84px;height:84px;border-radius:50%;background:var(--sesi);color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:800;font-size:32px}
+.bio ul{margin:8px 0 0;padding-left:18px;display:grid;gap:4px}
+
+/* ---------- Casos em aberto ---------- */
+.cases{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.case{background:var(--paper);color:var(--paper-ink);border-radius:4px 4px 14px 4px;padding:22px 20px 20px;position:relative;font-family:var(--type);box-shadow:0 2px 0 rgba(0,0,0,.08);min-width:0}
+.case::before{content:"";position:absolute;top:-10px;left:22px;width:90px;height:20px;background:var(--paper);border-radius:6px 6px 0 0;filter:brightness(.95)}
+.case .no{font-size:14px;letter-spacing:.08em;opacity:.8}
+.case h4{margin:8px 0 6px;font-family:var(--type);font-size:19px;line-height:1.25;font-weight:400}
+.case p{font-size:15px;line-height:1.45;font-family:var(--body)}
+.stamp{position:absolute;right:14px;top:14px;transform:rotate(8deg);border:2px solid var(--clue);color:var(--clue);font-family:var(--display);font-weight:800;letter-spacing:.12em;padding:0 8px;font-size:15px;border-radius:4px}
+.where-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
+.where{border:2px dashed var(--line);border-radius:14px;padding:18px;display:grid;gap:6px;align-content:start}
+.where h4{margin:0;font-family:var(--display);font-size:22px;text-transform:uppercase}
+.where p{font-size:15px;color:var(--muted)}
+.where .tel{font-family:var(--display);font-weight:700;font-size:20px;color:var(--ink);user-select:all}
+
+/* ---------- Futuro ---------- */
+.future{background:var(--sesi);color:#fff;border-radius:22px;padding:36px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px;position:relative;overflow:hidden}
+.future h2{font-size:clamp(42px,6vw,74px);font-weight:800;text-transform:uppercase}
+.future h2 span{color:#ffe08a}
+.future p{color:#e3eefb;margin-top:12px}
+.wish-form{display:flex;gap:8px;flex-wrap:wrap}
+.wish-form label{width:100%;font-family:var(--display);letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:#ffe08a}
+.wish-form input{flex:1 1 220px;min-width:0;border:0;border-radius:8px;padding:12px 14px;font:inherit;font-size:17px;background:#fff;color:#0b1a2c}
+.wish-form button{border:0;border-radius:8px;background:#ffd166;color:#0b1a2c;font-family:var(--display);font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:0 20px;font-size:18px;min-height:48px}
+.wishes{list-style:none;padding:0;margin:16px 0 0;display:flex;flex-wrap:wrap;gap:10px}
+.wishes li{background:#ffd166;color:#0b1a2c;padding:10px 14px;border-radius:3px;font-weight:600;transform:rotate(var(--r,0deg));box-shadow:0 4px 0 rgba(0,0,0,.18);max-width:100%;overflow-wrap:anywhere}
+.wishes li.ex{background:#fff1c2}
+
+/* ---------- Fontes ---------- */
+.sources{padding-block:64px 40px;color:var(--muted);font-size:15px}
+.sources h3{font-size:26px;text-transform:uppercase;color:var(--ink);margin-bottom:10px}
+.src-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 28px}
+.src-grid ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.src-grid h4{margin:8px 0 6px;font-family:var(--display);font-size:18px;text-transform:uppercase;color:var(--ink)}
+.sources .note{margin-top:16px;max-width:80ch}
+footer{background:var(--sesi-deep);color:#cfe1f5;font-size:15px}
+footer .wrap{padding-block:22px;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+footer b{color:#fff;font-family:var(--display);font-size:20px;letter-spacing:.04em}
+
+/* ---------- Modo apresentação ---------- */
+body.presenting .topbar,body.presenting .hero,body.presenting .stats,body.presenting .extra,body.presenting footer,body.presenting #linha .sec-head,body.presenting .legend{display:none}
+body.presenting #linha{padding-block:16px;min-height:100vh;display:flex;flex-direction:column;justify-content:center;max-width:1560px}
+body.presenting .card{min-height:66vh}
+body.presenting .card-body p{font-size:clamp(20px,1.8vw,28px)}
+body.presenting .card-body h2{font-size:clamp(42px,4.6vw,72px)}
+body.presenting .card-year .num{font-size:clamp(90px,11vw,180px)}
+
+@media (max-width:900px){
+  .hero .wrap{grid-template-columns:1fr;gap:10px}
+  .eighty{order:-1;justify-items:start}
+  .eighty .n{font-size:140px}
+  .stats .wrap{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 0}
+  .card{grid-template-columns:1fr;min-height:0}
+  .card-year{flex-direction:row;flex-wrap:wrap;align-items:flex-end;padding:22px}
+  .card-year .ico{display:none}
+  .card.has-photo{grid-template-columns:1fr}
+  .card-year.has-photo{min-height:320px;flex-direction:column;align-items:stretch}
+  .stage{grid-template-columns:1fr 1fr}
+  .stage .card{grid-column:1/-1;grid-row:1}
+  .nav{height:52px}
+  .card-body{padding:22px}
+  .pairs,.cases,.where-list,.src-grid{grid-template-columns:1fr}
+  .houses{grid-template-columns:1fr}
+  .road .arr-h{display:none}
+  .road .arr-v{display:inline}
+  .theme-grid>.panel{grid-column:span 12}
+  .future{grid-template-columns:1fr;padding:24px}
+  .notice{grid-template-columns:1fr}
+}
+@media (max-width:480px){
+  .pair{grid-template-columns:1fr;justify-items:center}
+  .arrow{transform:rotate(90deg)}
+  .nums{grid-template-columns:1fr}
+  .topnav{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+<style>body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>
+</head>
+<body>
+<nav class="topbar" aria-label="Seções">
+  <div class="wrap">
+    <a class="brand" href="#inicio">SESI <span>80</span> · Sertãozinho</a>
+    <div class="topnav">
+      <a href="#linha">Linha do tempo</a>
+      <a href="#antes">Antes e agora</a>
+      <a href="#escola">Nossa escola</a>
+      <a href="#temas">Esporte e robótica</a>
+      <a href="#casos">Casos em aberto</a>
+      <a href="#futuro">2106</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="inicio">
+  <svg class="gear" viewBox="0 0 100 100" aria-hidden="true"><path fill="#fff" d="M43 2h14l2 12 8 3 10-7 10 10-7 10 3 8 12 2v14l-12 2-3 8 7 10-10 10-10-7-8 3-2 12H43l-2-12-8-3-10 7-10-10 7-10-3-8-12-2V43l12-2 3-8-7-10 10-10 10 7 8-3zM50 32a18 18 0 1 0 0 36 18 18 0 1 0 0-36z"/></svg>
+  <div class="wrap">
+    <div>
+      <div class="label">Escola SESI CE 241 · Sertãozinho, SP</div>
+      <h1>Da agulha <em>ao robô</em></h1>
+      <p class="lead">A história que o SESI construiu em Sertãozinho: dos cursos de corte e costura dos anos 1950 à equipe de robótica que disputa campeonatos internacionais. Uma linha do tempo feita pela turma para os 80 anos do SESI.</p>
+      <div class="hero-cta">
+        <a class="btn gold" href="#linha">Ver a linha do tempo</a>
+        <button class="btn ghost" id="present-hero">▶ Apresentar</button>
+      </div>
+    </div>
+    <div class="eighty" aria-hidden="true">
+      <div class="n">80</div>
+      <div class="years">1946 — 2026</div>
+    </div>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stat"><b>1946</b><span>Criação do SESI no Brasil</span></div>
+    <div class="stat"><b>1964</b><span>Autorização oficial do CE SESI 241</span></div>
+    <div class="stat"><b>1992</b><span>Início do Centro de Atividades (CAT)</span></div>
+    <div class="stat"><b>≈15 mil</b><span>Crianças e jovens no Atleta do Futuro em 25 anos (estimativa)</span></div>
+    <div class="stat"><b>#9460</b><span>Steel Bulls, nossa equipe de robótica FRC</span></div>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+    <div class="notice" role="note">
+      <div class="big">!</div>
+      <div>
+        <h3>De quem são os 80 anos?</h3>
+        <p>Os 80 anos são do <b>SESI nacional</b>, criado em 1946. A unidade de Sertãozinho tem uma história própria, com pistas de cursos desde 1955 e autorização oficial da escola em 1964. Nesta página, cada fato traz um selo que mostra de onde a informação veio.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINHA DO TEMPO -->
+  <section class="block wrap" id="linha" aria-labelledby="t-linha">
+    <div class="sec-head">
+      <span class="label">Linha do tempo</span>
+      <h2 id="t-linha">Três histórias, uma linha</h2>
+      <p>A história do SESI no Brasil, de Sertãozinho e do SESI na nossa cidade, lado a lado. Clique nos anos ou use as setas.</p>
+    </div>
+    <div class="controls">
+      <div class="chips" role="group" aria-label="Filtrar a linha do tempo">
+        <button class="chip" id="f-todos" data-filter="todos" aria-pressed="true">Tudo</button>
+        <button class="chip" id="f-brasil" data-filter="brasil" aria-pressed="false"><span class="dot brasil"></span>SESI no Brasil</button>
+        <button class="chip" id="f-cidade" data-filter="cidade" aria-pressed="false"><span class="dot cidade"></span>Sertãozinho</button>
+        <button class="chip" id="f-unidade" data-filter="unidade" aria-pressed="false"><span class="dot unidade"></span>SESI em Sertãozinho</button>
+      </div>
+      <button class="btn btn-present" id="present">▶ Modo apresentação</button>
+    </div>
+    <div class="legend" aria-label="Legenda dos selos">
+      De onde vem a informação:
+      <span class="seal oficial">Documento oficial</span>
+      <span class="seal noticia">Notícia</span>
+      <span class="seal pesquisa">Pesquisa acadêmica</span>
+      <span class="seal pista">Pista a confirmar</span>
+    </div>
+
+    <div class="rail-box" id="railBox"><div class="rail" id="rail" role="tablist" aria-label="Anos da linha do tempo"></div></div>
+    <div class="progress" aria-hidden="true"><span id="bar"></span></div>
+
+    <div class="stage">
+      <button class="nav" id="prev" aria-label="Marco anterior">‹</button>
+      <article class="card" id="card" aria-live="polite"></article>
+      <button class="nav" id="next" aria-label="Próximo marco">›</button>
+    </div>
+    <p class="hint">Use <kbd>←</kbd> <kbd>→</kbd> para avançar · <kbd>F</kbd> para tela cheia · <kbd>Esc</kbd> para sair</p>
+  </section>
+
+  <div class="extra">
+  <!-- ANTES E AGORA -->
+  <section class="block wrap" id="antes" aria-labelledby="t-antes">
+    <div class="sec-head">
+      <span class="label">Antes e agora</span>
+      <h2 id="t-antes">O que se aprende mudou</h2>
+      <p>Cursos e ferramentas que já foram o padrão e o que ocupa o lugar deles hoje. Os exemplos de Sertãozinho vêm dos registros da nossa unidade.</p>
+    </div>
+    <div class="pairs">
+      <div class="pair">
+        <div class="side antes"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"><path d="M8 46h48v8H8zM14 46V22a8 8 0 0 1 8-8h26a6 6 0 0 1 6 6v6H26v20"/><path d="M40 26v12M36 38h8"/></svg><span class="when">1955</span><span class="what">Corte e costura</span><span class="where">Primeira pista do SESI em Sertãozinho</span></div>
+        <div class="arrow">→</div>
+        <div class="side agora"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"><rect x="8" y="8" width="48" height="48" rx="4"/><path d="M8 18h48M24 18v10h16V18M32 28v6"/><path d="M22 48h20l-4-10H26z"/></svg><span class="when">Hoje</span><span class="what">Impressora 3D e Espaço Maker</span><span class="where">Criar protótipos em vez de roupas</span></div>
+      </div>
+      <div class="pair">
+        <div class="side antes"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"><path d="M32 16c-6-4-14-5-22-4v38c8-1 16 0 22 4 6-4 14-5 22-4V12c-8-1-16 0-22 4zM32 16v38"/><path d="M16 24h10M16 32h10M38 24h10M38 32h10"/></svg><span class="when">2010</span><span class="what">Supletivo na fábrica</span><span class="where">32 funcionários da Equipalcool voltaram a estudar</span></div>
+        <div class="arrow">→</div>
+        <div class="side agora"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"><path d="M10 12h44v30H30l-12 10V42h-8z"/><path d="M32 18l2.5 6.5L41 27l-6.5 2.5L32 36l-2.5-6.5L23 27l6.5-2.5z"/></svg><span class="when">2026</span><span class="what">Aprender com IA</span><span class="where">Tema do seminário do SESI na Bienal</span></div>
+      </div>
+      <div class="pair">
+        <div class="side antes"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"><rect x="8" y="18" width="48" height="36" rx="6"/><path d="M14 24h28v24H14z"/><path d="M24 6l8 12 8-12"/></svg><span class="when">1995</span><span class="what">Aula pela TV</span><span class="where">Telecurso 2000</span></div>
+        <div class="arrow">→</div>
+        <div class="side agora"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"><path d="M6 46h52v8H6zM10 46l6-20h32l6 20"/><circle cx="22" cy="54" r="4"/><circle cx="42" cy="54" r="4"/><path d="M24 26V16h16v10M32 16V8"/></svg><span class="when">2022</span><span class="what">Escola Móvel de Ciência</span><span class="where">Laboratório sobre rodas no estacionamento do Docão</span></div>
+      </div>
+      <div class="pair">
+        <div class="side antes"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="12" r="6"/><path d="M32 18v20M14 14l18 10 18-10M32 38l-10 18M32 38l10 18"/></svg><span class="when">1994</span><span class="what">Atleta do Futuro</span><span class="where">Esporte para crianças no CAT</span></div>
+        <div class="arrow">→</div>
+        <div class="side agora"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"><rect x="14" y="18" width="36" height="28" rx="6"/><circle cx="25" cy="31" r="4"/><circle cx="39" cy="31" r="4"/><path d="M32 18V8M28 8h8M8 28v10M56 28v10M22 46v10M42 46v10"/></svg><span class="when">2026</span><span class="what">Steel Bulls #9460</span><span class="where">Robôs de competição internacional</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NOSSA ESCOLA -->
+  <section class="block wrap" id="escola" aria-labelledby="t-escola">
+    <div class="sec-head">
+      <span class="label">Nossa escola</span>
+      <h2 id="t-escola">As duas casas do CE 241</h2>
+      <p>A escola nem sempre esteve no mesmo lugar. Documentos oficiais mostram um endereço anterior ao atual.</p>
+    </div>
+    <div class="houses">
+      <div>
+        <div class="plate"><small>Até os anos 1990</small><strong>R. Pedro Canesin, 445</strong><span class="bairro">Jardim Alvorada</span></div>
+        <figure class="house-photo"><img src="img/elvira.jpg" alt="Fachada atual da EMEF Professora Elvira Arruda de Souza, onde funcionava a Escola SESI" data-cap="O antigo prédio do SESI no Jardim Alvorada, hoje EMEF Profª Elvira Arruda de Souza. Imagem: Google Street View" loading="lazy"><figcaption>O prédio hoje · Imagem: Google Street View</figcaption></figure>
+        <div class="house-info">
+          <span class="seal oficial">Documento oficial</span>
+          <p>O Parecer CEE nº 1.846/80 identifica o Centro Educacional SESI nº 241 nesse endereço, com cursos de 1º grau. Em 1995, a Escola Estadual Jardim Alvorada começou a funcionar no prédio onde antes ficava a Escola SESI. Hoje ali é a EMEF Professora Elvira Arruda de Souza.</p>
+        </div>
+      </div>
+      <div class="road" aria-hidden="true"><span class="arr-h">→</span><span class="arr-v">↓</span><small>ano da mudança?</small></div>
+      <div>
+        <div class="plate"><small>Hoje</small><strong>R. José Rodrigues Godinho, 100</strong><span class="bairro">Cohab Maurílio Biagi</span></div>
+        <figure class="house-photo"><img src="img/sesi-atual.jpg" alt="Entrada da Escola SESI de Sertãozinho, com o totem vermelho do SESI e a portaria" data-cap="Entrada da Escola SESI CE 241 hoje, na Rua José Rodrigues Godinho. Imagem: Google Street View" loading="lazy"><figcaption>A escola hoje · Imagem: Google Street View</figcaption></figure>
+        <div class="house-info">
+          <span class="seal oficial">Cadastro atual</span>
+          <p>Sede atual da Escola SESI-SP de Sertãozinho e do Centro de Atividades, com academia, balneário, quadras, quiosques e pista de caminhada.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="theme-grid" style="margin-top:28px">
+      <div class="panel span-7">
+        <span class="label">Patrono do Centro de Atividades</span>
+        <div class="bio">
+          <div class="mono" aria-hidden="true">NAJ</div>
+          <div>
+            <h3>Nelson Abbud João</h3>
+            <ul>
+              <li>Nasceu em 24 de janeiro de 1929, em São Paulo.</li>
+              <li>Formado em Contabilidade, Economia e Direito.</li>
+              <li>Representou o setor de confecções na Fiesp.</li>
+              <li>Foi juiz classista no Tribunal Regional do Trabalho da 15ª Região.</li>
+            </ul>
+          </div>
+        </div>
+        <p class="warn">Ainda não se sabe quando o CAT recebeu o nome dele.</p>
+      </div>
+      <div class="panel span-5">
+        <span class="label">Educação para todas as idades</span>
+        <ul class="mini">
+          <li><b>2010</b><span>Supletivo do Ensino Fundamental em parceria com a Equipalcool, com 32 funcionários inscritos.</span></li>
+          <li><b>2023</b><span>Convênio para matricular no 1º ano crianças em situação de alto risco social.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESPORTE E ROBÓTICA -->
+  <section class="block wrap" id="temas" aria-labelledby="t-temas">
+    <div class="sec-head">
+      <span class="label">Esporte, ciência e cultura</span>
+      <h2 id="t-temas">Do campo à pista de robôs</h2>
+      <p>As histórias mais bem documentadas do SESI em Sertãozinho.</p>
+    </div>
+    <div class="theme-grid">
+      <div class="panel span-6">
+        <span class="label">Programa Atleta do Futuro · desde 1994</span>
+        <h3>Esporte para milhares de crianças</h3>
+        <p>A parceria entre SESI e Prefeitura juntava a estrutura e o método do SESI, professores e transporte da cidade e o apoio de empresas como Caldema, Fertron, Fundição Água Vermelha e Irmãos Tonielo.</p>
+        <div class="nums">
+          <div class="num-tile"><b>≈1.300</b><span>participantes em 2019</span><em>informado</em></div>
+          <div class="num-tile"><b>≈15 mil</b><span>atendidos em 25 anos</span><em>estimativa</em></div>
+          <div class="num-tile"><b>1.800</b><span>vagas na renovação de 2022</span><em>previsão</em></div>
+          <div class="num-tile"><b>1.700</b><span>vagas na renovação de 2023</span><em>previsão</em></div>
+        </div>
+        <div class="pills"><span class="pill">Basquete</span><span class="pill">Vôlei</span><span class="pill">Handebol</span><span class="pill">Futebol</span><span class="pill">Natação</span><span class="pill">Ginástica rítmica</span></div>
+        <p class="warn">São números de tipos diferentes. Não dá para somar.</p>
+      </div>
+      <div class="panel span-6 blue">
+        <span class="label">Ciência e robótica</span>
+        <div class="team">#9460<small>Steel Bulls · SESI/SENAI Sertãozinho</small></div>
+        <figure class="house-photo"><img src="img/steel-bulls.jpg" alt="Membro da Steel Bulls observa o robô 9460 durante uma partida de robótica" data-cap="O robô da Steel Bulls #9460 em uma partida da temporada REEFSCAPE (2025)" loading="lazy"><figcaption>O robô 9460 em competição, temporada 2025</figcaption></figure>
+        <ul class="score">
+          <li><b>2017</b><span>Alunos do CE 241 das equipes FLL e OBR mostram robôs no Dia da Indústria.</span></li>
+          <li><b>2022</b><span>A Escola Móvel de Ciência e Tecnologia recebe turmas municipais, com mais de mil alunos previstos.</span></li>
+          <li><b>2025</b><span>Steel Bulls ganha o Quality Award na regional FRC em São Paulo.</span></li>
+          <li><b>2026</b><span>A equipe chega à aliança finalista do Regional Brazil, no Festival SESI de Educação.</span></li>
+          <li><b>2026</b><span>O projeto Girls From Bulls leva ciência e tecnologia a 25 meninas e mulheres no CEU das Artes.</span></li>
+        </ul>
+      </div>
+      <div class="panel span-6">
+        <span class="label">Natação</span>
+        <h3>Das primeiras braçadas às competições</h3>
+        <ul class="mini">
+          <li><b>2013</b><span>30 atletas de Sertãozinho representam o SESI em uma clínica de natação em Mococa.</span></li>
+          <li><b>2019</b><span>O SESI Sertãozinho recebe 220 atletas de sete unidades na Liga SESI de Natação.</span></li>
+          <li><b>2019</b><span>A nadadora Thaiana Amaral conta que começou aos seis anos no Atleta do Futuro.</span></li>
+          <li><b>2021</b><span>Seletivas para as equipes de treinamento mirim, petiz e infantil.</span></li>
+        </ul>
+      </div>
+      <div class="panel span-6">
+        <span class="label">Cultura, saúde e meio ambiente</span>
+        <h3>Muito além da sala de aula</h3>
+        <ul class="mini">
+          <li><b>2012</b><span>Sábado Mania com SESI e EPTV: lazer, oficinas e serviços de saúde.</span></li>
+          <li><b>2012</b><span>Desfile com roupas de materiais recicláveis na Semana de Moda e Meio Ambiente. A costura voltou, agora sustentável.</span></li>
+          <li><b>2016</b><span>Unidade Móvel de Nutrição com os cursos Alimente-se Bem e Sabor na Medida Certa.</span></li>
+          <li><b>2017</b><span>Espetáculo juvenil O Arquidiabo e o Camponês na programação cultural.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CASOS EM ABERTO -->
+  <section class="block wrap" id="casos" aria-labelledby="t-casos">
+    <div class="sec-head">
+      <span class="label">Investigação histórica</span>
+      <h2 id="t-casos">Casos em aberto</h2>
+      <p>Perguntas que a pesquisa on-line ainda não respondeu. Elas podem virar a próxima missão da turma.</p>
+    </div>
+    <div class="cases">
+      <article class="case"><span class="stamp">ABERTO</span><div class="no">CASO Nº 01</div><h4>Qual foi o primeiro dia do SESI em Sertãozinho?</h4><p>Há pistas de cursos em 1955 e 1962, mas ainda não há documento que mostre a data exata.</p></article>
+      <article class="case"><span class="stamp">ABERTO</span><div class="no">CASO Nº 02</div><h4>Quando a escola saiu do Jardim Alvorada?</h4><p>Sabemos que o prédio antigo virou outra escola em 1995. O ano da mudança ainda é um mistério.</p></article>
+      <article class="case"><span class="stamp">ABERTO</span><div class="no">CASO Nº 03</div><h4>Quem foram as primeiras alunas de corte e costura?</h4><p>Uma tese da USP cita os cursos de 1955. Falta achar o registro original e as pessoas que estudaram lá.</p></article>
+      <article class="case"><span class="stamp">ABERTO</span><div class="no">CASO Nº 04</div><h4>Como nasceu o Centro de Atividades?</h4><p>O convênio de 1992 com a Prefeitura ainda não foi encontrado completo, nem a história do terreno.</p></article>
+      <article class="case"><span class="stamp">ABERTO</span><div class="no">CASO Nº 05</div><h4>Quando começou o Ensino Médio no CE 241?</h4><p>O parecer de 1980 fala só de 1º grau. A data de chegada do Ensino Médio ainda não apareceu.</p></article>
+      <article class="case"><span class="stamp">ABERTO</span><div class="no">CASO Nº 06</div><h4>Quantos alunos já passaram por aqui?</h4><p>Não há totais públicos de matrículas, formandos e conquistas da unidade.</p></article>
+    </div>
+    <div class="where-list">
+      <div class="where"><h4>Secretaria do CE 241</h4><p>Livros de matrícula antigos, atas, fotos, placas de inauguração e registros da mudança de endereço.</p></div>
+      <div class="where"><h4>Prefeitura e Câmara</h4><p>Convênio de 1992, documentos do terreno, obras e parcerias.</p></div>
+      <div class="where"><h4>Centro Municipal de Memória</h4><p>Jornais antigos como O Monitor (1937–1984), O Sertanezino (1961–1963) e Momento Atual (1989–1999).</p><span class="tel">(16) 3945-9363</span></div>
+    </div>
+  </section>
+
+  <!-- FUTURO -->
+  <section class="block wrap" id="futuro" aria-labelledby="t-futuro">
+    <div class="future">
+      <div>
+        <span class="label" style="color:#ffe08a">Os próximos 80 anos</span>
+        <h2 id="t-futuro">E em <span>2106?</span></h2>
+        <p>O SESI vai fazer 160 anos. O que a gente quer que exista até lá na escola e em Sertãozinho? Escreva um desejo e cole no mural.</p>
+      </div>
+      <div>
+        <form class="wish-form" id="wishForm">
+          <label for="wishInput">Meu desejo para 2106</label>
+          <input id="wishInput" maxlength="90" placeholder="Ex.: usinas 100% de energia limpa" autocomplete="off">
+          <button type="submit">Colar</button>
+        </form>
+        <ul class="wishes" id="wishes">
+          <li class="ex" style="--r:-2deg">Exemplo: cana virando combustível de avião</li>
+          <li class="ex" style="--r:1.5deg">Exemplo: Steel Bulls campeã mundial</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FONTES -->
+  <section class="sources wrap" aria-labelledby="t-fontes">
+    <h3 id="t-fontes">Fontes</h3>
+    <div class="src-grid">
+      <div>
+        <h4>SESI no Brasil</h4>
+        <ul>
+          <li>Decreto-Lei nº 9.403/1946 (Câmara dos Deputados)</li>
+          <li><a href="https://agenciabrasil.ebc.com.br/cultura/noticia/2026-07/sesi-completa-80-anos-com-rede-de-468-escolas-em-todo-brasil" target="_blank" rel="noopener">Agência Brasil: SESI completa 80 anos</a></li>
+          <li><a href="https://noticias.portaldaindustria.com.br/noticias/institucional/sesi-lanca-linha-do-tempo-interativa-em-comemoracao-aos-seus-80-anos/" target="_blank" rel="noopener">Portal da Indústria: linha do tempo dos 80 anos</a></li>
+          <li><a href="https://noticias.portaldaindustria.com.br/noticias/educacao/ia-em-sala-de-aula-veja-o-que-rolou-no-seminario-internacional-sesi-de-educacao/" target="_blank" rel="noopener">Portal da Indústria: seminário sobre IA</a></li>
+        </ul>
+        <h4>Sertãozinho</h4>
+        <ul>
+          <li><a href="https://www.al.sp.gov.br/spl/2017/12/Acessorio/1000200066_1000149152_Acessorio.pdf" target="_blank" rel="noopener">ALESP: fundação de Sertãozinho</a></li>
+          <li><a href="https://www.al.sp.gov.br/spl/2015/05/Propositura/1256518_50233646_Propositura.doc" target="_blank" rel="noopener">ALESP: Capital do Etanol e Engenho Central</a></li>
+          <li><a href="https://olhardigital.com.br/curiosidades/?p=20358" target="_blank" rel="noopener">Olhar Digital: engenhos em 1905</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>SESI em Sertãozinho</h4>
+        <ul>
+          <li>Parecer CEE nº 1.846/80 (Conselho Estadual de Educação)</li>
+          <li>Reinaldo Tronto, tese da USP (2024), Quadro 2.2, p. 133</li>
+          <li>Histórico oficial do CAT SESI Sertãozinho</li>
+          <li>Prefeitura de Sertãozinho: Atleta do Futuro, convênios, Girls From Bulls e histórico da EMEF Profª Elvira Arruda de Souza</li>
+          <li>FIRST: registro da equipe Steel Bulls #9460</li>
+          <li>Revista Cultivar: supletivo com a Equipalcool (2010)</li>
+          <li>Imprensa regional (Visão Regional), SENAI-SP e CROSP</li>
+          <li>Pesquisa organizada pela turma no documento "História SESI – IA"</li>
+        </ul>
+      </div>
+    </div>
+    <p class="note">Algumas fotos são ilustrativas: vêm de outras unidades do SESI ou de outras cidades e foram usadas para representar a época de cada marco. As imagens de 1945 e de 2106 foram criadas com inteligência artificial.</p>
+    <p class="note">Os selos mostram o grau de certeza de cada fato. Uma notícia no portal do SESI Sertãozinho nem sempre fala de alunos daqui, porque o site reproduz notícias de toda a rede SESI-SP. Por isso entraram aqui só fatos com ligação clara com a cidade.</p>
+  </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <b>SESI 80 anos · Sertãozinho</b>
+    <span>Projeto da turma da Escola SESI CE 241 · Feito com pesquisa e inteligência artificial · 2026</span>
+  </div>
+</footer>
+
+<script>
+const ICONS={
+  casa:'<path d="M10 44 32 24l22 20M16 40v20h32V40M28 60V48h8v12"/>',
+  pena:'<path d="M14 54 46 22c6-6 8-14 4-16s-12 2-16 8L20 44z"/><path d="M14 54l8-2"/>',
+  cana:'<path d="M24 60V6M40 60V12"/><path d="M18 20h12M18 36h12M18 50h12M34 26h12M34 42h12" stroke-width="5"/><path d="M24 20c8-6 12-12 12-18M40 30c6-4 12-6 16-6"/>',
+  carta:'<rect x="8" y="14" width="48" height="36" rx="3"/><path d="M8 16l24 18 24-18"/>',
+  fabrica:'<path d="M8 58V30l14 8v-8l14 8v-8l14 8V10h8v48z"/><path d="M16 48h6M28 48h6M40 48h6"/>',
+  livro:'<path d="M32 16c-6-4-14-5-22-4v38c8-1 16 0 22 4 6-4 14-5 22-4V12c-8-1-16 0-22 4zM32 16v38"/>',
+  agulha:'<path d="M12 52 50 14"/><circle cx="50" cy="14" r="4"/><path d="M50 14c-10 4-22 10-26 22s6 18 16 12"/>',
+  lupa:'<circle cx="26" cy="26" r="16"/><path d="M38 38l18 18"/>',
+  escola:'<path d="M6 58h52M10 58V28l22-14 22 14v30M24 58V42h16v16M32 14V4h10v6H32"/>',
+  selo:'<circle cx="32" cy="26" r="16"/><path d="M24 40l-6 18 14-6 14 6-6-18"/><path d="M25 26l5 5 9-10"/>',
+  usina:'<path d="M8 58V36h14V24h12v12h22v22z"/><path d="M14 18c0-6 6-6 6-12M42 30c0-6 6-6 6-12"/>',
+  quadra:'<rect x="6" y="14" width="52" height="36" rx="2"/><path d="M32 14v36"/><circle cx="32" cy="32" r="8"/>',
+  corpo:'<circle cx="32" cy="12" r="6"/><path d="M32 18v20M14 14l18 10 18-10M32 38l-10 18M32 38l10 18"/>',
+  tv:'<rect x="8" y="18" width="48" height="36" rx="6"/><path d="M24 6l8 12 8-12"/>',
+  predio:'<path d="M10 58V20h20v38M30 58V8h24v50M6 58h52"/><path d="M16 28h8M16 38h8M36 18h12M36 28h12M36 38h12"/>',
+  diploma:'<rect x="6" y="14" width="44" height="32" rx="2"/><path d="M14 24h28M14 32h20"/><circle cx="48" cy="44" r="8"/><path d="M44 50l-2 10 6-4 6 4-2-10"/>',
+  roupa:'<path d="M22 8l-14 8 6 12 6-3v31h24V25l6 3 6-12-14-8c-2 6-6 8-10 8s-8-2-10-8z"/>',
+  onda:'<path d="M4 26c8-6 12 6 20 0s12 6 20 0 12 6 20 0M4 40c8-6 12 6 20 0s12 6 20 0 12 6 20 0"/><circle cx="40" cy="14" r="5"/>',
+  prato:'<circle cx="32" cy="34" r="20"/><circle cx="32" cy="34" r="11"/><path d="M6 10v16M10 10v16M8 26v32M58 10c-6 2-8 10-6 18h4v30"/>',
+  robo:'<rect x="14" y="18" width="36" height="28" rx="6"/><circle cx="25" cy="31" r="4"/><circle cx="39" cy="31" r="4"/><path d="M32 18V8M8 28v10M56 28v10M22 46v10M42 46v10"/>',
+  van:'<path d="M6 46h52v8H6zM10 46l6-20h32l6 20"/><circle cx="22" cy="54" r="4"/><circle cx="42" cy="54" r="4"/>',
+  trofeu:'<path d="M20 8h24v14a12 12 0 0 1-24 0zM20 14H10c0 10 6 14 12 14M44 14h10c0 10-6 14-12 14M32 34v12M22 56h20l-2-10H24z"/>',
+  bolo:'<path d="M10 58h44M14 58V36h36v22M14 44c6 4 12-4 18 0s12-4 18 0M24 36V26M32 36V24M40 36V26"/>',
+  menina:'<circle cx="32" cy="16" r="9"/><path d="M14 58c0-14 8-24 18-24s18 10 18 24"/><path d="M48 8l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/>',
+  estrela:'<path d="M32 6l7 16 17 2-13 12 4 17-15-9-15 9 4-17L8 24l17-2z"/>'
+};
+const SEAL={oficial:"Documento oficial",noticia:"Notícia",pesquisa:"Pesquisa acadêmica",pista:"Pista a confirmar",ideia:"Imaginação"};
+const TRACK={brasil:"SESI no Brasil",cidade:"Sertãozinho",unidade:"SESI em Sertãozinho",futuro:"Futuro"};
+const DATA=[
+ {y:"1877",t:"cidade",s:"oficial",i:"casa",img:"igreja.jpg",cap:"Primeira igreja de Sertãozinho",h:"Nasce Sertãozinho",
+  p:"Antônio Malaquias Pedroso, um dos donos da fazenda Sertãozinho, constrói sua casa e doa 12 alqueires e meio de terra. Em volta dessa doação começa o povoado.",
+  f:"Antes dos fazendeiros, a região entre os rios Pardo e Mogi-Guaçu era território do povo Caiapó."},
+ {y:"1896",t:"cidade",s:"pista",i:"pena",img:"cidade-antiga.jpg",cap:"Sertãozinho antiga",h:"Sertãozinho vira município",
+  p:"O povoado ganha autonomia e vira cidade. Em 2026, a emancipação completa 130 anos, junto com os 80 anos do SESI."},
+ {y:"1905",t:"cidade",s:"noticia",i:"cana",img:"engenho.jpg",cap:"Engenho de cana-de-açúcar",h:"Café e cana-de-açúcar",
+  p:"Sertãozinho já tinha pelo menos 33 engenhos de cana, mas o café ainda dominava as fazendas. As ferrovias levavam a produção para fora.",
+  f:"A cana, que hoje define a cidade, começou dividindo espaço com o café."},
+ {y:"1945",t:"brasil",s:"oficial",i:"carta",img:"operarios.jpg",cap:"Operários trabalhando em uma fábrica",h:"O Brasil pede paz no trabalho",
+  p:"Depois da 2ª Guerra, o país se industrializa, falta comida e há tensão entre patrões e trabalhadores. A Carta de Teresópolis (1945) e a Carta da Paz Social (1946) preparam a criação do SESI.",
+  f:"Roberto Simonsen e Euvaldo Lodi estão entre os industriais que articularam a criação do SESI."},
+ {y:"1946",d:"25 de junho e 1º de julho",t:"brasil",s:"oficial",i:"fabrica",img:"sesi-nucleo.jpg",cap:"Crianças em um Núcleo Comunitário do SESI",h:"Nasce o SESI",
+  p:"Em 25 de junho, o Decreto-Lei nº 9.403 dá à Confederação Nacional da Indústria a missão de criar o SESI. Em 1º de julho, o primeiro regulamento é aprovado. Por isso o aniversário é em julho.",
+  f:"O SESI nasceu para cuidar da educação, da saúde e da qualidade de vida de quem trabalha na indústria."},
+ {y:"1947",t:"brasil",s:"noticia",i:"livro",img:"paulo-freire.jpg",cap:"Paulo Freire",h:"Paulo Freire no SESI",
+  p:"Paulo Freire, patrono da educação brasileira, começa a trabalhar no SESI e fica 19 anos na instituição. O contato com famílias operárias ajudou a formar suas ideias sobre educação.",
+  f:"Ele ficou famoso no mundo todo pelo método de alfabetizar adultos com as palavras do dia a dia deles."},
+ {y:"1955",t:"unidade",s:"pesquisa",i:"agulha",img:"costura.jpg",cap:"Aula de corte e costura",h:"A agulha chega a Sertãozinho",
+  p:"Uma tese da USP cita cursos de corte e costura ligados ao SESI em Sertãozinho. É a pista mais antiga da presença do SESI na cidade.",
+  f:"É daqui que vem o nome do projeto: a história do SESI em Sertãozinho começa com agulha e linha."},
+ {y:"1961",t:"unidade",s:"pista",i:"lupa",img:"alunas-1961.jpg",cap:"Alunas de uniforme saindo da escola",h:"Memórias de uma aluna",
+  p:"A biografia de Vera Ferrante conta que ela estudou no SESI em 1961 e 1964. Em 1962, a mesma tese da USP já coloca o SESI entre as instituições de ensino da cidade.",
+  f:"Ex-alunos dessa época podem virar entrevistados do projeto."},
+ {y:"1964",d:"6 de novembro",t:"unidade",s:"oficial",i:"escola",img:"escola-sesi.jpg",cap:"Escola SESI antiga",h:"O CE SESI 241 é autorizado",
+  p:"É publicado o Ato nº 3.089, que autoriza o funcionamento do Centro Educacional SESI nº 241. É o primeiro marco seguro em documento oficial.",
+  f:"O número 241 que a nossa escola carrega até hoje aparece nesse documento."},
+ {y:"1980",d:"25 de novembro",t:"unidade",s:"oficial",i:"selo",img:"elvira.jpg",cap:"O prédio da Rua Pedro Canesin hoje, como EMEF Profª Elvira Arruda de Souza · Imagem: Google Street View",h:"Escola reconhecida",
+  p:"O Parecer CEE nº 1.846/80 reconhece oficialmente o centro educacional, que funcionava na Rua Pedro Canesin, 445, no Jardim Alvorada, com cursos de 1º grau.",
+  f:"Autorizar e reconhecer são etapas diferentes: a escola já funcionava antes de ser reconhecida."},
+ {y:"Anos 90",t:"cidade",s:"pista",i:"usina",img:"fenasucro.jpg",cap:"Fenasucro, a maior feira do setor sucroenergético, em Sertãozinho",h:"Capital do Etanol",
+  p:"A indústria de açúcar, álcool e equipamentos faz de Sertãozinho uma referência nacional. A Fenasucro, maior feira do setor, dá à cidade o título de Capital do Etanol.",
+  f:"O antigo Engenho Central virou instituto cultural e guarda a história do açúcar e do álcool na cidade."},
+ {y:"1992",t:"unidade",s:"oficial",i:"quadra",img:"cat-2006.jpg",cap:"Vista aérea das piscinas do Centro de Atividades do SESI Sertãozinho em 2006",h:"Nasce o Centro de Atividades",
+  p:"Começam as atividades do Centro de Atividades Nelson Abbud João, por convênio com a Prefeitura. Hoje o CAT tem academia, balneário, quadras e pista de caminhada.",
+  f:"O patrono, Nelson Abbud João, representou o setor de confecções na Fiesp. Mais uma ligação com a costura."},
+ {y:"1994",t:"unidade",s:"oficial",i:"corpo",img:"atleta-futuro.jpg",cap:"Alunos do programa Atleta do Futuro do SESI-SP",h:"Atleta do Futuro",
+  p:"Começa em Sertãozinho o Programa Atleta do Futuro, com basquete, vôlei, handebol, futebol, natação e ginástica rítmica para crianças e jovens.",
+  f:"Em 25 anos, a estimativa é de cerca de 15 mil crianças e jovens atendidos."},
+ {y:"1995",t:"brasil",s:"noticia",i:"tv",img:"telecurso.jpg",cap:"Abertura do Telecurso 2000",h:"Telecurso 2000",
+  p:"Começa o Telecurso 2000: aulas pela televisão para que trabalhadores terminassem os estudos sem largar o emprego.",
+  f:"Foi uma das primeiras grandes experiências de ensino a distância no Brasil."},
+ {y:"1995",t:"unidade",s:"oficial",i:"predio",img:"elvira.jpg",cap:"O antigo prédio do SESI, hoje EMEF Profª Elvira Arruda de Souza · Imagem: Google Street View",h:"O prédio antigo ganha nova vida",
+  p:"A Escola Estadual Jardim Alvorada começa a funcionar no prédio onde antes ficava a Escola SESI. Hoje ali é a EMEF Professora Elvira Arruda de Souza.",
+  f:"Isso prova que o SESI já tinha se mudado. O ano exato da mudança ainda é um caso em aberto."},
+ {y:"2010",t:"unidade",s:"noticia",i:"diploma",img:"supletivo.jpg",cap:"Adultos estudando em uma turma de Educação de Jovens e Adultos",h:"De volta aos estudos",
+  p:"SESI Sertãozinho e Equipalcool criam um supletivo do Ensino Fundamental para funcionários da empresa. 32 trabalhadores se inscreveram.",
+  f:"Empresa e SESI dividiram responsabilidades e custos do curso."},
+ {y:"2012",t:"unidade",s:"noticia",i:"roupa",img:"moda-reciclada.jpg",cap:"Desfile escolar com roupas feitas de materiais reciclados",h:"Moda e meio ambiente",
+  p:"O SESI participa da 10ª Semana de Moda e Meio Ambiente, com desfile de roupas feitas de materiais recicláveis. No mesmo ano, o Sábado Mania leva lazer, oficinas e saúde à população.",
+  f:"Quase 60 anos depois dos cursos de corte e costura, a costura volta, agora sustentável."},
+ {y:"2016",t:"unidade",s:"noticia",i:"prato",img:"cozinha-brasil.jpg",cap:"Caminhão do programa SESI Cozinha Brasil em uma aula ao ar livre",h:"Nutrição sobre rodas",
+  p:"A Unidade Móvel de Nutrição oferece os cursos Alimente-se Bem e Sabor na Medida Certa em parceria com instituições da cidade."},
+ {y:"2017",t:"unidade",s:"noticia",i:"robo",img:"robo-lego.jpg",cap:"Robô de LEGO sobre o tapete da FIRST LEGO League",h:"Robôs no Dia da Indústria",
+  p:"Alunos do CE 241 das equipes de FLL e OBR apresentam seus robôs nas comemorações do Dia da Indústria. Crianças do 1º ao 5º ano interagem com os projetos.",
+  f:"FLL é a FIRST LEGO League. OBR é a Olimpíada Brasileira de Robótica."},
+ {y:"2019",t:"unidade",s:"noticia",i:"onda",img:"natacao.jpg",cap:"Largada de uma prova de natação",h:"25 anos de Atleta do Futuro",
+  p:"O programa comemora 25 anos com cerca de 1.300 participantes. No mesmo ano, o SESI Sertãozinho recebe 220 atletas de sete unidades na Liga SESI de Natação.",
+  f:"A nadadora Thaiana Amaral começou aos seis anos no Atleta do Futuro em Sertãozinho."},
+ {y:"2022",t:"unidade",s:"noticia",i:"van",img:"escola-movel.jpg",cap:"Unidade Móvel de Ciência e Tecnologia do SESI",h:"Escola Móvel de Ciência",
+  p:"A Escola Móvel de Ciência e Tecnologia do SESI atende turmas municipais do 4º ao 9º ano no estacionamento do Docão. A previsão era receber mais de mil alunos."},
+ {y:"2025",t:"unidade",s:"noticia",i:"trofeu",img:"steel-bulls-equipe.jpg",cap:"Equipe Steel Bulls #9460 com a bandeira e o prêmio da temporada REEFSCAPE (2025)",h:"Steel Bulls premiada",
+  p:"A equipe Steel Bulls, do SESI/SENAI Sertãozinho, ganha o Quality Award na segunda regional da FRC, em São Paulo.",
+  f:"Na FRC, a FIRST Robotics Competition, os robôs podem passar de 50 quilos."},
+ {y:"2026",d:"Março",t:"unidade",s:"oficial",i:"robo",img:"steel-bulls-robo.jpg",cap:"O robô 9460 em partida, com a equipe Steel Bulls torcendo",h:"Na aliança finalista",
+  p:"O registro oficial da FIRST lista a Steel Bulls #9460 na aliança finalista do Regional Brazil, disputado no Festival SESI de Educação.",
+  f:"O festival também teve um seminário sobre inteligência artificial na educação."},
+ {y:"2026",d:"1º de julho",t:"brasil",s:"noticia",i:"bolo",img:"sesi-80-logo.png",cap:"Marca oficial dos 80 anos do SESI",logo:true,h:"80 anos de SESI",
+  p:"O SESI comemora 80 anos com 468 escolas pelo Brasil, exposições e homenagens. Sertãozinho chega aos 130 anos de emancipação.",
+  f:"Este projeto foi feito com ajuda de IA, a mesma tecnologia que o SESI começa a levar para a sala de aula."},
+ {y:"2026",d:"Outubro",t:"unidade",s:"noticia",i:"menina",img:"girls-from-bulls.jpg",cap:"As meninas da Steel Bulls na homenagem ao Dia das Mulheres na Engenharia",h:"Girls From Bulls",
+  p:"O projeto das Steel Bulls leva ciência e tecnologia a 25 meninas e mulheres no CEU das Artes, depois de ações nos CRAS em setembro.",
+  f:"O objetivo é trazer mais meninas para a ciência e a robótica."},
+ {y:"2106",t:"futuro",s:"ideia",i:"estrela",img:"futuro-2106.jpg",cap:"Uma estudante em 2106 costura com a ajuda de um braço robótico, ao lado de uma máquina de costura dos anos 1950",h:"Os próximos 80 anos",
+  p:"O que vamos aprender daqui a 80 anos? Talvez a cana vire combustível de avião, as fábricas usem só energia limpa e as aulas tenham robôs e IA como parceiros.",
+  f:"Na imagem, a máquina de costura dos anos 1950 virou peça de museu ao lado do braço robótico: da agulha ao robô. Deixe o seu desejo para 2106 no mural no fim da página."}
+];
+let filter="todos", idx=0;
+const rail=document.getElementById("rail"), card=document.getElementById("card");
+const visible=()=>DATA.map((d,i)=>i).filter(i=>filter==="todos"||DATA[i].t===filter||DATA[i].t==="futuro");
+
+DATA.forEach((d,i)=>{
+  const b=document.createElement("button");
+  b.className="node";b.id="node-"+i;b.dataset.track=d.t;b.setAttribute("role","tab");
+  b.setAttribute("aria-label",d.y+": "+d.h);
+  b.innerHTML='<span class="pin"></span><span class="yr">'+d.y+'</span>';
+  b.addEventListener("click",()=>go(i));
+  rail.appendChild(b);
+});
+
+function render(){
+  const d=DATA[idx], vis=visible(), pos=vis.indexOf(idx);
+  card.dataset.track=d.t;
+  card.classList.toggle("has-photo",!!d.img);
+  const count='<div class="count">'+String(pos+1).padStart(2,"0")+' / '+String(vis.length).padStart(2,"0")+'</div>';
+  const yearBlock='<div class="num">'+d.y+'</div>'+(d.d?'<div class="date">'+d.d+'</div>':'');
+  const left=d.img
+   ? '<div class="card-year has-photo'+(d.logo?' logo':'')+'"><button class="photo" style="background-image:url(img/'+d.img+')" aria-label="Ampliar foto: '+d.cap+'" data-img="img/'+d.img+'" data-cap="'+d.cap.replace(/"/g,"&quot;")+'"></button>'+
+     '<div><div class="tag">'+TRACK[d.t]+'</div></div><div>'+yearBlock+count+'</div></div>'
+   : '<div class="card-year"><div><div class="tag">'+TRACK[d.t]+'</div>'+yearBlock+'</div>'+
+     '<svg class="ico" viewBox="0 0 64 64" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICONS[d.i]+'</svg>'+count+'</div>';
+  card.innerHTML=left+
+   '<div class="card-body"><span class="seal '+d.s+'">'+SEAL[d.s]+'</span><h2>'+d.h+'</h2><p>'+d.p+'</p>'+
+   (d.f?'<div class="fact"><b>Você sabia?</b>'+d.f+'</div>':'')+
+   (d.img?'<div class="photo-cap"><span>'+(d.logo?'Imagem: ':'Foto: ')+d.cap+'</span>'+(d.ref?'<span class="ref">'+(d.ref===true?'Imagem de referência, não é de Sertãozinho':d.ref)+'</span>':'')+'<button type="button" data-zoom>Ampliar foto</button></div>':'')+'</div>';
+  card.classList.remove("card-enter");void card.offsetWidth;card.classList.add("card-enter");
+  DATA.forEach((_,i)=>{
+    const n=document.getElementById("node-"+i);
+    n.setAttribute("aria-current",i===idx?"true":"false");
+    n.classList.toggle("dim",!vis.includes(i));
+  });
+  document.getElementById("prev").disabled=pos<=0;
+  document.getElementById("next").disabled=pos>=vis.length-1;
+  document.getElementById("bar").style.width=((pos+1)/vis.length*100)+"%";
+  const n=document.getElementById("node-"+idx), box=document.getElementById("railBox");
+  box.scrollTo({left:n.offsetLeft-box.clientWidth/2+n.offsetWidth/2,behavior:"smooth"});
+}
+function go(i){ if(!visible().includes(i)) return; idx=i; render(); }
+function step(s){ const v=visible(), p=v.indexOf(idx), q=Math.min(v.length-1,Math.max(0,p+s)); go(v[q]); }
+document.getElementById("prev").onclick=()=>step(-1);
+document.getElementById("next").onclick=()=>step(1);
+document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{
+  filter=c.dataset.filter;
+  document.querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed",x===c?"true":"false"));
+  const v=visible(); if(!v.includes(idx)) idx=v[0];
+  render();
+}));
+
+/* Modo apresentação */
+const presentBtn=document.getElementById("present");
+function setPresenting(on){
+  document.body.classList.toggle("presenting",on);
+  presentBtn.textContent=on?"✕ Sair da apresentação":"▶ Modo apresentação";
+  if(on){
+    const el=document.documentElement;
+    if(el.requestFullscreen){ el.requestFullscreen().catch(()=>{}); }
+    document.getElementById("linha").scrollIntoView({block:"start"});
+  } else {
+    if(document.fullscreenElement && document.exitFullscreen){ document.exitFullscreen().catch(()=>{}); }
+  }
+}
+presentBtn.onclick=()=>setPresenting(!document.body.classList.contains("presenting"));
+document.getElementById("present-hero").onclick=()=>{ idx=visible()[0]; render(); setPresenting(true); };
+document.addEventListener("fullscreenchange",()=>{ if(!document.fullscreenElement && document.body.classList.contains("presenting")) setPresenting(false); });
+document.addEventListener("keydown",e=>{
+  if(e.target.matches("input,textarea")) return;
+  if(lb){ if(e.key==="Escape"){closePhoto();} return; }
+  const pres=document.body.classList.contains("presenting");
+  if(e.key==="ArrowRight"||(pres&&(e.key===" "||e.key==="PageDown"))){e.preventDefault();step(1);}
+  else if(e.key==="ArrowLeft"||(pres&&e.key==="PageUp")){e.preventDefault();step(-1);}
+  else if(e.key==="f"||e.key==="F"){setPresenting(!pres);}
+  else if(e.key==="Escape"&&pres){setPresenting(false);}
+});
+
+/* Ampliar fotos */
+let lb=null;
+function openPhoto(src,cap){
+  closePhoto();
+  lb=document.createElement("div");lb.className="lightbox";lb.setAttribute("role","dialog");lb.setAttribute("aria-label","Foto ampliada");
+  const fig=document.createElement("figure");const im=document.createElement("img");im.src=src;im.alt=cap;
+  const fc=document.createElement("figcaption");fc.textContent=cap+" · clique para fechar";
+  fig.append(im,fc);lb.appendChild(fig);lb.addEventListener("click",closePhoto);document.body.appendChild(lb);
+}
+function closePhoto(){ if(lb){lb.remove();lb=null;} }
+card.addEventListener("click",e=>{
+  const t=e.target.closest(".photo,[data-zoom]"); if(!t) return;
+  const ph=card.querySelector(".photo"); if(ph) openPhoto(ph.dataset.img,ph.dataset.cap);
+});
+document.querySelectorAll(".house-photo img").forEach(im=>im.addEventListener("click",()=>openPhoto(im.getAttribute("src"),im.dataset.cap)));
+
+/* Mural de desejos (fica salvo só neste navegador) */
+const KEY="sesi80-desejos", list=document.getElementById("wishes");
+function addWish(text){
+  const li=document.createElement("li");li.textContent=text;
+  li.style.setProperty("--r",(Math.random()*4-2).toFixed(1)+"deg");
+  list.appendChild(li);
+}
+let saved=[];
+try{saved=JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){saved=[]}
+saved.forEach(addWish);
+document.getElementById("wishForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const inp=document.getElementById("wishInput"), v=inp.value.trim();
+  if(!v) return;
+  addWish(v); saved.push(v);
+  try{localStorage.setItem(KEY,JSON.stringify(saved))}catch(err){}
+  inp.value="";
+});
+
+render();
+</script>
+</body>
+</html>
